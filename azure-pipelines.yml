@@ -1,0 +1,61 @@
+trigger:
+  - master
+
+variables:
+  buildconfiguration: 'release'
+
+pool:
+ name: 'AKS'
+ vmimage: 'windows-2019'
+
+stages:
+  - stage: 'build'
+    jobs:
+      - job: buildJob
+        steps:
+          - task: UseDotNet@2
+            inputs: 
+             version: '5.0.x'
+             includePreviewVersions: true
+
+          - task: UseDotNet@2
+            displayName: 'Install .NET Core SDK'
+            inputs:
+              version: 5.0.x
+              performMultiLevelLookup: true
+              includePreviewVersions: true
+
+          - task: DotNetCoreCLI@0
+            inputs:
+              command: restore
+
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: build
+              projects: '**/*.csproj'
+              arguments: '--configuration $(buildConfiguration)'
+
+  - stage:
+    jobs:
+      - job: publishJob
+        steps:
+          - task: DotNetCoreCLI@2
+            inputs:
+              command: publish
+              publishWebProjects: true
+              arguments: '--configuration $(buildConfiguration)  --output $(Build.ArtifactStagingDirectory)'
+              zipAfterPublish: true
+
+          - task: PublishPipelineArtifact@1
+            inputs:
+              targetPath: '$(Build.ArtifactStagingDirectory)' 
+              artifactName: 'myWebsiteName001'              
+
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
+              appType: 'webApp'
+              WebAppName: 'pipelineApp'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
