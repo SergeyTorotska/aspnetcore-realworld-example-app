@@ -40,7 +40,7 @@ stages:
             command: publish
             publishWebProjects: false
             projects: '**\*.csproj'
-            arguments:  '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+            arguments:  '--configuration $(buildConfiguration) --output $(build.ArtifactStagingDirectory)'
             zipAfterPublish: true
         - publish: '$(build.ArtifactStagigDirectory)'
           artifact: drop  
@@ -49,4 +49,4 @@ stages:
           inputs:
             azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
             AppName: 'PipelineApps'
-            package: $(Build.ArtifactStagingDirectory)/**/*.zip
+            package: $(build.ArtifactStagingDirectory)/**/*.zip
