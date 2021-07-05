@@ -18,7 +18,13 @@ stages:
              version: '5.0.x'
              includePreviewVersions: true
 
-        
+          - task: UseDotNet@2
+            displayName: 'Install .NET Core SDK'
+            inputs:
+              version: 5.0.x
+              performMultiLevelLookup: true
+              includePreviewVersions: true
+
           - task: DotNetCoreCLI@0
             inputs:
               command: restore
@@ -38,15 +44,11 @@ stages:
             inputs:
               command: publish
               publishWebProjects: true
-              arguments: '--configuration $(buildConfiguration)'
+              arguments: '--configuration $(buildConfiguration)  --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: true
-          - task: UseDotNet@2
-            displayName: 'Install .NET Core SDK'
-            inputs:
-              version: 5.0.x
-              performMultiLevelLookup: true
-              includePreviewVersions: true
-    
+          - publish: '$(build.ArtifactStagigDirectory)'
+            artifact: drop
+
           - task: PublishPipelineArtifact@1
             inputs:
               targetPath: '$(Build.ArtifactStagingDirectory)' 
