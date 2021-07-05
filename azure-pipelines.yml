@@ -42,6 +42,7 @@ stages:
             projects: '**\*.csproj'
             arguments:  '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
             zipAfterPublish: true
+        - task: PublishBuildArtifacts@1
         - task: AzureWebApp@1
           inputs:
             azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
