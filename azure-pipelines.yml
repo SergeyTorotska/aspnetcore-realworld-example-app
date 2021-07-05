@@ -40,25 +40,9 @@ stages:
     jobs:
       - job: publishJob
         steps:
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: publish
-              projects: '**/*.csproj'
-              publishWebProjects: true
-              arguments: '--no-build --configuration $(buildConfiguration)  --output $(Build.ArtifactStagingDirectory)'
-              zipAfterPublish: true
-          - publish: '$(build.ArtifactStagigDirectory)'
-            artifact: drop
 
-          - task: PublishPipelineArtifact@1
+          - task: AzureWebApp@1
             inputs:
-              targetPath: '$(Build.ArtifactStagingDirectory)' 
-              artifactName: 'myWebsiteName001'              
-
-          - task: AzureRmWebAppDeployment@4
-            inputs:
-              ConnectionType: 'AzureRM'
               azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
-              appType: 'webApp'
-              WebAppName: 'pipelineApp'
-              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+              AppName: 'pipelineApp'
+              package: '$(System.DefaultWorkingDirectory)/**/*.zip'
