@@ -20,7 +20,7 @@ stages:
               performMultiLevelLookup: true
               includePreviewVersions: true
 
-          - task: DotNetCoreCLI@0
+          - task: DotNetCoreCLI@2
             inputs:
               command: restore
 
