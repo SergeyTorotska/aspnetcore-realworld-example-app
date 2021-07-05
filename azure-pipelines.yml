@@ -43,6 +43,7 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
               zipAfterPublish: true
+          - task: PublishBuildArtifacts@1   
           - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
             artifact: drop
 
