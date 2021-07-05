@@ -2,7 +2,7 @@ trigger:
   - master
 
 variables:
-  buildconfiguration: 'release'
+  buildConfiguration: 'release'
 
 pool:
  name: 'AKS'
@@ -44,7 +44,7 @@ stages:
             inputs:
               command: publish
               publishWebProjects: true
-              arguments: '--configuration $(buildConfiguration)  --output $(Build.ArtifactStagingDirectory)'
+              arguments: '--configuration $(buildConfiguration)'
               zipAfterPublish: true
 
           - task: PublishPipelineArtifact@1
