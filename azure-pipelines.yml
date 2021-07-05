@@ -40,9 +40,18 @@ stages:
     jobs:
       - job: publishJob
         steps:
+          - task: DotNetCoreCLI@2
+            displayName: Publish
+            inputs:
+              command: publish
+              publishWebProjects: false
+              projects: '$(projectDirectory)\hadar.csproj'
+              arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+              zipAfterPublish: true
+
 
           - task: AzureWebApp@1
-            inputs:
+           inputs:
               azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
               AppName: 'PipelineApps'
               package: '$(System.DefaultWorkingDirectory)/**/*.zip'
