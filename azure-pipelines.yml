@@ -42,6 +42,8 @@ stages:
             projects: '**\*.csproj'
             arguments:  '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
             zipAfterPublish: true
+        - publish: '$(build.ArtifactStagigDirectory)'
+          artifact: drop  
         - task: PublishBuildArtifacts@1
         - task: AzureWebApp@1
           inputs:
