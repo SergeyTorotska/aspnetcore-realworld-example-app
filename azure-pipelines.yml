@@ -31,24 +31,12 @@ stages:
               projects: '**/*.csproj'
               arguments: '--configuration $(buildConfiguration)'
 
-  - stage:
+  - stage: deploy
     jobs:
       - job: publishJob
         steps:
-          - task: DotNetCoreCLI@2
-            displayName: Publish
-            inputs:
-              command: publish
-              publishWebProjects: true
-              projects: '**/*.csproj'
-              arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-              zipAfterPublish: true
-          - task: PublishBuildArtifacts@1   
-          - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-            artifact: drop1
-
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
-              AppName: 'PipelineApps'
-              package: '$(System.DefaultWorkingDirectory)/**/*.zip' 
+        - task: AzureWebApp@1
+          inputs:
+            azureSubscription: 'Azure subscription 1 (f016713d-47fd-4917-a2c7-c2805377c59c)'
+            AppName: 'PipelineApps'
+            package: '$(System.DefaultWorkingDirectory)/**/*.zip' 
