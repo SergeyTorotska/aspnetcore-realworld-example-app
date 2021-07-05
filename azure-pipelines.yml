@@ -5,7 +5,7 @@ variables:
   buildConfiguration: 'release'
 
 pool:
- name: 'Default'
+ name: 'Azure Pipelines'
  vmimage: 'windows-2019'
 
 stages:
